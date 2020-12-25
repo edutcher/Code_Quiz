@@ -1,5 +1,14 @@
 const gameArea = document.getElementById('gameArea');
 const timeText = document.getElementById('timeText');
+const questArea = document.createElement('h3');
+
+const ansBtn0 = document.createElement('button');
+const ansBtn1 = document.createElement('button');
+const ansBtn2 = document.createElement('button');
+const ansBtn3 = document.createElement('button');
+const statField = document.createElement('p');
+
+
 const questArray = [{
     question: 'What HTML tag would you use to create a hyperlink?',
     ansArray: ['<a>', '<link>', '<hyper>', '<goto>'],
@@ -24,7 +33,7 @@ const questArray = [{
 
 var secondsLeft = 75;
 var gameOver = false;
-
+var currentQ = 0;
 
 function destroyArea() {
     gameArea.textContent = '';
@@ -33,26 +42,77 @@ function destroyArea() {
 function startTimer() {
     var timerInterval = setInterval(function() {
         secondsLeft--;
-        timeText.textContent = "Time: " + secondsLeft;
+
 
         if (secondsLeft === 0 || gameOver) {
             clearInterval(timerInterval);
             gameOver = true;
+            showResults();
         }
+
+        timeText.textContent = "Time: " + secondsLeft;
 
     }, 1000);
 }
 
+function showResults() {
+    destroyArea();
+
+    const result = document.createElement('h4');
+    result.textContent = "Your Score " + secondsLeft;
+
+    gameArea.appendChild(result);
+}
+
+function answer(ans) {
+    if (questArray[currentQ].answer != ans) {
+        statField.textContent = 'Wrong!';
+        secondsLeft = secondsLeft - 15;
+    } else {
+        statField.textContent = 'Correct!';
+    }
+
+    console.log(currentQ);
+    console.log(questArray.length);
+
+    currentQ++;
+    if (currentQ < questArray.length) {
+        nextQ();
+    } else {
+        gameOver = true;
+    }
+
+    if (gameOver) {
+        showResults();
+    }
+}
+
+function nextQ() {
+    questArea.textContent = questArray[currentQ].question;
+
+    ansBtn0.textContent = questArray[currentQ].ansArray[0];
+    ansBtn1.textContent = questArray[currentQ].ansArray[1];
+    ansBtn2.textContent = questArray[currentQ].ansArray[2];
+    ansBtn3.textContent = questArray[currentQ].ansArray[3];
+}
 
 function playGame() {
     destroyArea();
 
     startTimer();
 
-    const questArea = document.createElement('h3');
-    questArea.textContent = questArray[0].question;
     questArea.classList.add('text-center');
+    ansBtn0.setAttribute('onclick', 'answer(0)');
+    ansBtn1.setAttribute('onclick', 'answer(1)');
+    ansBtn2.setAttribute('onclick', 'answer(2)');
+    ansBtn3.setAttribute('onclick', 'answer(3)');
 
     gameArea.appendChild(questArea);
+    gameArea.appendChild(ansBtn0);
+    gameArea.appendChild(ansBtn1);
+    gameArea.appendChild(ansBtn2);
+    gameArea.appendChild(ansBtn3);
+    gameArea.appendChild(statField);
 
+    nextQ();
 }
