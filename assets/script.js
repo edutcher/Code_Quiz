@@ -22,14 +22,35 @@ const questArray = [{
     answer: 3
 }];
 
+var secondsLeft = 75;
+var gameOver = false;
+
+
 function destroyArea() {
     gameArea.textContent = '';
 }
 
+function startTimer() {
+    var timerInterval = setInterval(function() {
+        secondsLeft--;
+        timeText.textContent = "Time: " + secondsLeft;
+
+        if (secondsLeft === 0 || gameOver) {
+            clearInterval(timerInterval);
+            gameOver = true;
+        }
+
+    }, 1000);
+}
+
+
 function playGame() {
     destroyArea();
 
+    startTimer();
+
     const questArea = document.createElement('h3');
+    questArea.textContent = questArray[0].question;
     questArea.classList.add('text-center');
 
     gameArea.appendChild(questArea);
