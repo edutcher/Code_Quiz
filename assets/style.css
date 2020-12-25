@@ -1,0 +1,15 @@
+#gameArea {
+    background-color: blue;
+}
+
+#topBar {
+    background-color: crimson;
+}
+
+#lightScore {
+    background-color: darkgreen;
+}
+
+#casualScore {
+    background-color: darkorange;
+}
