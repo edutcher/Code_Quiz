@@ -1,7 +1,7 @@
 const gameArea = document.getElementById('gameArea');
 const timeText = document.getElementById('timeText');
-const questArea = document.createElement('h3');
 
+const questArea = document.createElement('h3');
 const ansBtn0 = document.createElement('button');
 const ansBtn1 = document.createElement('button');
 const ansBtn2 = document.createElement('button');
@@ -45,9 +45,10 @@ function startTimer() {
 
 
         if (secondsLeft === 0 || gameOver) {
-            clearInterval(timerInterval);
             gameOver = true;
+            secondsLeft++;
             showResults();
+            clearInterval(timerInterval);
         }
 
         timeText.textContent = "Time: " + secondsLeft;
@@ -55,13 +56,36 @@ function startTimer() {
     }, 1000);
 }
 
+function showScores() {
+    destroyArea();
+
+    var getScores = JSON.parse(localStorage.getItem('Scores'));
+
+    const scoreArea = document.createElement('p');
+
+    scoreArea.textContent = getScores.init + " " + getScores.score;
+
+    gameArea.appendChild(scoreArea);
+
+}
+
 function showResults() {
     destroyArea();
+
+    if (secondsLeft === 1) {
+        secondsLeft = 0;
+    }
 
     const result = document.createElement('h4');
     result.textContent = "Your Score " + secondsLeft;
 
+    var userScore = { init: 'TEST', score: secondsLeft };
+
+    localStorage.setItem('Scores', JSON.stringify(userScore));
+
     gameArea.appendChild(result);
+
+    showScores();
 }
 
 function answer(ans) {
@@ -71,9 +95,6 @@ function answer(ans) {
     } else {
         statField.textContent = 'Correct!';
     }
-
-    console.log(currentQ);
-    console.log(questArray.length);
 
     currentQ++;
     if (currentQ < questArray.length) {
