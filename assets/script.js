@@ -189,23 +189,27 @@ function showResults() {
 
     const result = document.createElement('h4');
     const initRow = document.createElement('div');
-    const initPromt = document.createElement('p');
+    const initPrompt = document.createElement('p');
     const initInput = document.createElement('input');
     const initBtn = document.createElement('button');
 
     result.textContent = "Your Score " + secondsLeft;
+    result.classList.add('mb-4');
 
     initRow.classList.add('row');
 
-    initPromt.textContent = 'Enter Initials: ';
+    initPrompt.textContent = 'Enter Initials: ';
+    initPrompt.classList.add('h3');
+
+    initInput.classList.add('mx-2');
 
     initBtn.classList.add('btn');
-    initBtn.classList.add('btn-success');
+    initBtn.classList.add('btn-success', 'mx-1');
     initBtn.setAttribute('onclick', 'checkScores(secondsLeft)');
 
     initBtn.textContent = 'Enter';
 
-    initRow.appendChild(initPromt);
+    initRow.appendChild(initPrompt);
     initRow.appendChild(initInput);
     initRow.appendChild(initBtn);
 
