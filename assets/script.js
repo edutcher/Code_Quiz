@@ -88,11 +88,43 @@ function showScores() {
     var getScores = JSON.parse(localStorage.getItem('Scores'));
 
     const scoreArea = document.createElement('p');
+    const welcomeBtn = document.createElement('button');
+    const clearBtn = document.createElement('button');
 
     scoreArea.textContent = getScores.init + " " + getScores.score;
 
-    gameArea.appendChild(scoreArea);
+    clearBtn.textContent = 'Clear';
+    clearBtn.classList.add('btn');
+    clearBtn.classList.add('btn-danger');
+    clearBtn.setAttribute('onclick', 'localStorage.clear()');
 
+    welcomeBtn.textContent = 'Back';
+    welcomeBtn.classList.add('btn');
+    welcomeBtn.classList.add('btn-success');
+    welcomeBtn.setAttribute('onclick', 'welcomeScreen()');
+
+    gameArea.appendChild(scoreArea);
+    gameArea.appendChild(clearBtn);
+    gameArea.appendChild(welcomeBtn);
+
+}
+
+function checkScores(gameScore) {
+    const initInput = document.querySelector('input');
+
+    var userScore = { init: initInput.value, score: gameScore };
+
+    if (localStorage.getItem('Scores') === null) {
+        localStorage.setItem('Scores', JSON.stringify(userScore));
+    }
+
+    var getScores = JSON.parse(localStorage.getItem('Scores'));
+
+    if (gameScore > getScores.score) {
+        localStorage.setItem('Scores', JSON.stringify(userScore));
+    }
+
+    showScores();
 }
 
 function showResults() {
@@ -103,15 +135,29 @@ function showResults() {
     }
 
     const result = document.createElement('h4');
+    const initRow = document.createElement('div');
+    const initPromt = document.createElement('p');
+    const initInput = document.createElement('input');
+    const initBtn = document.createElement('button');
+
     result.textContent = "Your Score " + secondsLeft;
 
-    var userScore = { init: 'TEST', score: secondsLeft };
+    initRow.classList.add('row');
 
-    localStorage.setItem('Scores', JSON.stringify(userScore));
+    initPromt.textContent = 'Enter Initials: ';
+
+    initBtn.classList.add('btn');
+    initBtn.classList.add('btn-success');
+    initBtn.setAttribute('onclick', 'checkScores(secondsLeft)');
+
+    initBtn.textContent = 'Enter';
+
+    initRow.appendChild(initPromt);
+    initRow.appendChild(initInput);
+    initRow.appendChild(initBtn);
 
     gameArea.appendChild(result);
-
-    showScores();
+    gameArea.appendChild(initRow);
 }
 
 function answer(ans) {
@@ -146,6 +192,11 @@ function nextQ() {
 function playGame() {
     destroyArea();
 
+    currentQ = 0;
+    secondsLeft = 75;
+    gameOver = false;
+    statField.textContent = '';
+
     startTimer();
 
     questArea.classList.add('text-center');
@@ -154,11 +205,18 @@ function playGame() {
     ansBtn2.setAttribute('onclick', 'answer(2)');
     ansBtn3.setAttribute('onclick', 'answer(3)');
 
+    const btnRow = document.createElement('div');
+
+    btnRow.classList.add('row');
+    btnRow.classList.add('text-center');
+
+    btnRow.appendChild(ansBtn0);
+    btnRow.appendChild(ansBtn1);
+    btnRow.appendChild(ansBtn2);
+    btnRow.appendChild(ansBtn3);
+
     gameArea.appendChild(questArea);
-    gameArea.appendChild(ansBtn0);
-    gameArea.appendChild(ansBtn1);
-    gameArea.appendChild(ansBtn2);
-    gameArea.appendChild(ansBtn3);
+    gameArea.appendChild(btnRow);
     gameArea.appendChild(statField);
 
     nextQ();
