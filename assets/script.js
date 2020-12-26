@@ -71,14 +71,17 @@ function welcomeScreen() {
     subtext.textContent = 'Test your web coding knowledge, Ready to start?';
     strtBtn.textContent = 'Start';
 
-    strtBtn.classList.add('btn');
-    strtBtn.classList.add('btn-success');
+    strtBtn.classList.add('btn', 'btn-success');
 
     strtBtn.setAttribute('onclick', 'playGame()');
 
-    welcome.appendChild(title);
-    welcome.appendChild(subtext);
-    welcome.appendChild(strtBtn);
+    var welcomeFrag = document.createDocumentFragment();
+
+    welcomeFrag.appendChild(title);
+    welcomeFrag.appendChild(subtext);
+    welcomeFrag.appendChild(strtBtn);
+
+    welcome.appendChild(welcomeFrag);
 
     gameArea.appendChild(welcome);
 
@@ -103,31 +106,33 @@ function showScores() {
     const welcomeBtn = document.createElement('button');
     const clearBtn = document.createElement('button');
 
-    var tempString = "";
+    scoreArea.classList.add('no-flex');
 
     if (!Array.isArray(getScores)) {
         scoreArea.textContent = getScores.init + " " + getScores.score;
     } else {
         for (var i = 0; i < getScores.length; i++) {
-            tempString += getScores[i].init + ": " + getScores[i].score + "\n ";
-        }
-        scoreArea.textContent = tempString;
+            const scoreItem = document.createElement('p');
+            scoreItem.textContent = getScores[i].init + ": " + getScores[i].score;
+            scoreArea.appendChild(scoreItem);
+        };
     }
 
     clearBtn.textContent = 'Clear';
-    clearBtn.classList.add('btn');
-    clearBtn.classList.add('btn-danger');
+    clearBtn.classList.add('btn', 'btn-danger', 'mr-1');
     clearBtn.setAttribute('onclick', 'clearScores()');
 
     welcomeBtn.textContent = 'Back';
-    welcomeBtn.classList.add('btn');
-    welcomeBtn.classList.add('btn-success');
+    welcomeBtn.classList.add('btn', 'btn-success');
     welcomeBtn.setAttribute('onclick', 'welcomeScreen()');
 
-    gameArea.appendChild(scoreArea);
-    gameArea.appendChild(clearBtn);
-    gameArea.appendChild(welcomeBtn);
+    var scoreFrag = document.createDocumentFragment();
 
+    scoreFrag.appendChild(scoreArea);
+    scoreFrag.appendChild(clearBtn);
+    scoreFrag.appendChild(welcomeBtn);
+
+    gameArea.appendChild(scoreFrag);
 }
 
 function checkScores(gameScore) {
@@ -204,8 +209,12 @@ function showResults() {
     initRow.appendChild(initInput);
     initRow.appendChild(initBtn);
 
-    gameArea.appendChild(result);
-    gameArea.appendChild(initRow);
+    var resultFrag = document.createDocumentFragment();
+
+    resultFrag.appendChild(result);
+    resultFrag.appendChild(initRow);
+
+    gameArea.appendChild(resultFrag);
 }
 
 function answer(ans) {
@@ -258,12 +267,16 @@ function playGame() {
     ansBtn2.classList.add('btn', 'purple', 'col-3');
     ansBtn3.classList.add('btn', 'purple', 'col-3');
 
-    gameArea.appendChild(questArea);
-    gameArea.appendChild(ansBtn0);
-    gameArea.appendChild(ansBtn1);
-    gameArea.appendChild(ansBtn2);
-    gameArea.appendChild(ansBtn3);
-    gameArea.appendChild(statField);
+    var gameFrag = document.createDocumentFragment();
+
+    gameFrag.appendChild(questArea);
+    gameFrag.appendChild(ansBtn0);
+    gameFrag.appendChild(ansBtn1);
+    gameFrag.appendChild(ansBtn2);
+    gameFrag.appendChild(ansBtn3);
+    gameFrag.appendChild(statField);
+
+    gameArea.appendChild(gameFrag)
 
     nextQ();
 }
