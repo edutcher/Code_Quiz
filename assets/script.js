@@ -59,6 +59,8 @@ function startTimer() {
 function welcomeScreen() {
     destroyArea();
 
+    secondsLeft = 75;
+
     const welcome = document.createElement('div');
     const title = document.createElement('h1');
     const subtext = document.createElement('p');
@@ -80,6 +82,11 @@ function welcomeScreen() {
 
     gameArea.appendChild(welcome);
 
+}
+
+function clearScores() {
+    localStorage.clear();
+    showScores();
 }
 
 function showScores() {
@@ -110,7 +117,7 @@ function showScores() {
     clearBtn.textContent = 'Clear';
     clearBtn.classList.add('btn');
     clearBtn.classList.add('btn-danger');
-    clearBtn.setAttribute('onclick', 'localStorage.clear()');
+    clearBtn.setAttribute('onclick', 'clearScores()');
 
     welcomeBtn.textContent = 'Back';
     welcomeBtn.classList.add('btn');
@@ -141,13 +148,19 @@ function checkScores(gameScore) {
     } else if (getScores.length < 5) {
         tempArray = getScores;
         tempArray.push(userScore);
+        var tempScore;
+        for (var i = 0; i < tempArray.length; i++) {
+            for (var j = i + 1; j < tempArray.length; j++) {
+                if (tempArray[j].score > tempArray[i].score) {
+                    tempScore = tempArray[i];
+                    tempArray[i] = tempArray[j];
+                    tempArray[j] = tempScore;
+                }
+            }
+        }
         localStorage.setItem('Scores', JSON.stringify(tempArray));
     } else {
-        console.log('got here');
         for (var i = 0; i < getScores.length; i++) {
-            console.log(getScores);
-            console.log(getScores[i].init);
-            console.log(getScores[i].score);
             if (gameScore > getScores[i].score) {
                 for (var j = getScores.length - 1; j > i; j--) {
                     getScores[j] = getScores[j - 1];
@@ -240,18 +253,16 @@ function playGame() {
     ansBtn2.setAttribute('onclick', 'answer(2)');
     ansBtn3.setAttribute('onclick', 'answer(3)');
 
-    const btnRow = document.createElement('div');
-
-    btnRow.classList.add('row');
-    btnRow.classList.add('text-center');
-
-    btnRow.appendChild(ansBtn0);
-    btnRow.appendChild(ansBtn1);
-    btnRow.appendChild(ansBtn2);
-    btnRow.appendChild(ansBtn3);
+    ansBtn0.classList.add('btn', 'purple', 'col-3');
+    ansBtn1.classList.add('btn', 'purple', 'col-3');
+    ansBtn2.classList.add('btn', 'purple', 'col-3');
+    ansBtn3.classList.add('btn', 'purple', 'col-3');
 
     gameArea.appendChild(questArea);
-    gameArea.appendChild(btnRow);
+    gameArea.appendChild(ansBtn0);
+    gameArea.appendChild(ansBtn1);
+    gameArea.appendChild(ansBtn2);
+    gameArea.appendChild(ansBtn3);
     gameArea.appendChild(statField);
 
     nextQ();
