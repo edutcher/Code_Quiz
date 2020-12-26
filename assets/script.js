@@ -85,13 +85,27 @@ function welcomeScreen() {
 function showScores() {
     destroyArea();
 
+    if (localStorage.getItem('Scores') === null) {
+        var userScore = { init: 'none', score: 0 };
+        localStorage.setItem('Scores', JSON.stringify(userScore));
+    }
+
     var getScores = JSON.parse(localStorage.getItem('Scores'));
 
     const scoreArea = document.createElement('p');
     const welcomeBtn = document.createElement('button');
     const clearBtn = document.createElement('button');
 
-    scoreArea.textContent = getScores.init + " " + getScores.score;
+    var tempString = "";
+
+    if (!Array.isArray(getScores)) {
+        scoreArea.textContent = getScores.init + " " + getScores.score;
+    } else {
+        for (var i = 0; i < getScores.length; i++) {
+            tempString += getScores[i].init + ": " + getScores[i].score + "\n ";
+        }
+        scoreArea.textContent = tempString;
+    }
 
     clearBtn.textContent = 'Clear';
     clearBtn.classList.add('btn');
@@ -119,9 +133,30 @@ function checkScores(gameScore) {
     }
 
     var getScores = JSON.parse(localStorage.getItem('Scores'));
+    var tempArray = [];
 
-    if (gameScore > getScores.score) {
-        localStorage.setItem('Scores', JSON.stringify(userScore));
+    if (!Array.isArray(getScores)) {
+        tempArray[0] = userScore;
+        localStorage.setItem('Scores', JSON.stringify(tempArray));
+    } else if (getScores.length < 5) {
+        tempArray = getScores;
+        tempArray.push(userScore);
+        localStorage.setItem('Scores', JSON.stringify(tempArray));
+    } else {
+        console.log('got here');
+        for (var i = 0; i < getScores.length; i++) {
+            console.log(getScores);
+            console.log(getScores[i].init);
+            console.log(getScores[i].score);
+            if (gameScore > getScores[i].score) {
+                for (var j = getScores.length - 1; j > i; j--) {
+                    getScores[j] = getScores[j - 1];
+                }
+                getScores[i] = userScore;
+                break;
+            }
+        }
+        localStorage.setItem('Scores', JSON.stringify(getScores))
     }
 
     showScores();
