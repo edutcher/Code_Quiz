@@ -56,6 +56,32 @@ function startTimer() {
     }, 1000);
 }
 
+function welcomeScreen() {
+    destroyArea();
+
+    const welcome = document.createElement('div');
+    const title = document.createElement('h1');
+    const subtext = document.createElement('p');
+    const strtBtn = document.createElement('button');
+
+    welcome.classList.add('text-center');
+    title.textContent = 'Coding Quiz';
+    subtext.textContent = 'Test your web coding knowledge, Ready to start?';
+    strtBtn.textContent = 'Start';
+
+    strtBtn.classList.add('btn');
+    strtBtn.classList.add('btn-success');
+
+    strtBtn.setAttribute('onclick', 'playGame()');
+
+    welcome.appendChild(title);
+    welcome.appendChild(subtext);
+    welcome.appendChild(strtBtn);
+
+    gameArea.appendChild(welcome);
+
+}
+
 function showScores() {
     destroyArea();
 
@@ -137,3 +163,5 @@ function playGame() {
 
     nextQ();
 }
+
+welcomeScreen();
