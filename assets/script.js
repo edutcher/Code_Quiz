@@ -1,6 +1,6 @@
+//create references to document elements
 const gameArea = document.getElementById('gameArea');
 const timeText = document.getElementById('timeText');
-
 const questArea = document.createElement('h3');
 const ansBtn0 = document.createElement('button');
 const ansBtn1 = document.createElement('button');
@@ -8,7 +8,7 @@ const ansBtn2 = document.createElement('button');
 const ansBtn3 = document.createElement('button');
 const statField = document.createElement('p');
 
-
+// Array of Questions and Answers
 const questArray = [{
     question: 'What HTML tag would you use to create a hyperlink?',
     ansArray: ['<a>', '<link>', '<hyper>', '<goto>'],
@@ -31,14 +31,17 @@ const questArray = [{
     answer: 3
 }];
 
+// Global game variables
 var secondsLeft = 75;
 var gameOver = false;
 var currentQ = 0;
 
+// clears out anything in the game area
 function destroyArea() {
     gameArea.textContent = '';
 }
 
+// starts game timer
 function startTimer() {
     var timerInterval = setInterval(function() {
         secondsLeft--;
@@ -56,6 +59,7 @@ function startTimer() {
     }, 1000);
 }
 
+// create and display welcome screen
 function welcomeScreen() {
     destroyArea();
 
@@ -87,11 +91,13 @@ function welcomeScreen() {
 
 }
 
+// clear local storage and re-show scores
 function clearScores() {
     localStorage.clear();
     showScores();
 }
 
+// pull scores from local storage and display them in the game area
 function showScores() {
     destroyArea();
 
@@ -135,6 +141,7 @@ function showScores() {
     gameArea.appendChild(scoreFrag);
 }
 
+// checks user score against saved high scores
 function checkScores(gameScore) {
     const initInput = document.querySelector('input');
 
@@ -180,6 +187,7 @@ function checkScores(gameScore) {
     showScores();
 }
 
+// shows the users score at the end of the game and gets initials
 function showResults() {
     destroyArea();
 
@@ -221,6 +229,7 @@ function showResults() {
     gameArea.appendChild(resultFrag);
 }
 
+// checks if correct answer button pressed
 function answer(ans) {
     if (questArray[currentQ].answer != ans) {
         statField.textContent = 'Wrong!';
@@ -241,6 +250,7 @@ function answer(ans) {
     }
 }
 
+// populates next question on screen
 function nextQ() {
     questArea.textContent = questArray[currentQ].question;
 
@@ -250,6 +260,7 @@ function nextQ() {
     ansBtn3.textContent = questArray[currentQ].ansArray[3];
 }
 
+// starts the game and creates the game elements
 function playGame() {
     destroyArea();
 
@@ -285,4 +296,5 @@ function playGame() {
     nextQ();
 }
 
+//Shows the welcome screen at start
 welcomeScreen();
